@@ -315,7 +315,7 @@ bool PlayerbotAIConfig::Initialize()
     sPlayerbotTextMgr->LoadBotTexts();
     sPlayerbotTextMgr->LoadBotTextChance();
 
-    if (!sPlayerbotAIConfig->autoDoQuests)
+    if (sPlayerbotAIConfig->autoDoQuests)
     {
         LOG_INFO("server.loading", "Loading Quest Detail Data...");
         sTravelMgr->LoadQuestTravelTable();
