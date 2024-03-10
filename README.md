@@ -1,21 +1,21 @@
 # Playerbots Module
 
-Welcome to the Playerbots Module for AzerothCore, a work in progress project based on the IKE3 Playerbots. These Playerbots utilize actual player data, allowing you to interact with your own alts, form parties, level up characters, and much more.
+Welcome to a fork of Playerbots Module for AzerothCore, a work in progress project based on the IKE3 Playerbots. These Playerbots utilize actual player data, allowing you to interact with your own alts, form parties, level up characters, and much more.
 
 If you encounter any errors or experience crashes, we kindly request that you report them as GitHub issues. Your valuable feedback will help us improve and enhance this project collaboratively.
 
 ## Installation
 
-Please note that this module requires specific custom changes to AzerothCore. To ensure compatibility, you must compile it with a custom branch from my fork, which can be found here: [liyunfan1223/azerothcore-wotlk/tree/Playerbot](https://github.com/liyunfan1223/azerothcore-wotlk/tree/Playerbot).
+Please note that this module requires specific custom changes to AzerothCore. To ensure compatibility, you must compile it with a custom branch from my fork, which can be found here: [evrydayjunglist/azerothcore-wotlk/tree/Playerbot](https://github.com/evrydayjunglist/azerothcore-wotlk/tree/Playerbot).
 
 To install this module, please refer to the AzerothCore Wiki for detailed instructions: [AzerothCore Installation Guide](https://www.azerothcore.org/wiki/installation).
 
 We've provided a simple method to clone the module:
 
 ```bash
-git clone https://github.com/liyunfan1223/azerothcore-wotlk.git --branch=Playerbot
+git clone https://github.com/evrydayjunglist/azerothcore-wotlk.git --branch=Playerbot
 cd azerothcore-wotlk/modules
-git clone https://github.com/liyunfan1223/mod-playerbots.git --branch=master
+git clone https://github.com/evrydayjunglist/mod-playerbots.git --branch=master
 ```
 
 ## Quick Start & Documentation
