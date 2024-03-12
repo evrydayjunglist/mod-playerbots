@@ -217,7 +217,7 @@ class GenericPaladinStrategyActionNodeFactory : public NamedObjectFactory<Action
         {
             return new ActionNode ("holy wrath",
                 /*P*/ nullptr,
-                /*A*/ NextAction::array(0, new NextAction("consecration"), NULL),
+                /*A*/ nullptr,
                 /*C*/ nullptr);
         }
         static ActionNode* hammer_of_wrath(PlayerbotAI* ai)
