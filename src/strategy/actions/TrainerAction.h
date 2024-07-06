@@ -34,4 +34,19 @@ class MaintenanceAction : public Action
 		MaintenanceAction(PlayerbotAI* botAI) : Action(botAI, "maintenance") { }
         bool Execute(Event event) override;
 };
+
+class RemoveGlyphAction : public Action
+{
+    public:
+		RemoveGlyphAction(PlayerbotAI* botAI) : Action(botAI, "remove glyph") { }
+        bool Execute(Event event) override;
+};
+
+class AutoGearAction : public Action
+{
+    public:
+		AutoGearAction(PlayerbotAI* botAI) : Action(botAI, "autogear") { }
+        bool Execute(Event event) override;
+};
+
 #endif

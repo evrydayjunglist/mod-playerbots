@@ -150,9 +150,11 @@ void TrainerAction::TellFooter(uint32 totalCost)
 
 bool MaintenanceAction::Execute(Event event)
 {
-    if (!sPlayerbotAIConfig->maintenanceCommand)
+    if (!sPlayerbotAIConfig->maintenanceCommand) {
+        botAI->TellMaster("maintenance command is not allowed, please check the configuration.");
         return false;
-    botAI->TellMaster("maintenance");
+    }
+    botAI->TellMaster("I'm maintaining");
     PlayerbotFactory factory(bot, bot->GetLevel());
     factory.InitBags(false);
     factory.InitAmmo();
@@ -165,6 +167,37 @@ bool MaintenanceAction::Execute(Event event)
     factory.InitAvailableSpells();
     factory.InitSkills();
     factory.InitMounts();
+    factory.InitGlyphs(true);
+    if (bot->getLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel) {
+        factory.ApplyEnchantAndGemsNew();
+    }
+    bot->DurabilityRepairAll(false, 1.0f, false);
+    return true;
+}
+
+bool RemoveGlyphAction::Execute(Event event)
+{
+    for (uint32 slotIndex = 0; slotIndex < MAX_GLYPH_SLOT_INDEX; ++slotIndex)
+    {
+        bot->SetGlyph(slotIndex, 0, true);
+    }
+    return true;
+}
+
+bool AutoGearAction::Execute(Event event)
+{
+    if (!sPlayerbotAIConfig->autoGearCommand) {
+        botAI->TellMaster("autogear command is not allowed, please check the configuration.");
+        return false;
+    }
+    botAI->TellMaster("I'm auto gearing");
+    uint32 gs = sPlayerbotAIConfig->autoGearScoreLimit == 0 ? 0 :
+        PlayerbotFactory::CalcMixedGearScore(sPlayerbotAIConfig->autoGearScoreLimit, sPlayerbotAIConfig->autoGearQualityLimit);
+    PlayerbotFactory factory(bot,
+        bot->GetLevel(),
+        sPlayerbotAIConfig->autoGearQualityLimit,
+        gs);
+    factory.InitEquipment(true);
     if (bot->getLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel) {
         factory.ApplyEnchantAndGemsNew();
     }

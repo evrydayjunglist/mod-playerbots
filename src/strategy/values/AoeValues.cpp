@@ -117,3 +117,30 @@ bool HasAreaDebuffValue::Calculate()
 
     return false;
 }
+
+Aura* AreaDebuffValue::Calculate()
+{
+    // Unit::AuraApplicationMap& map = bot->GetAppliedAuras();
+    Unit::AuraEffectList const& aurasPeriodicDamage = bot->GetAuraEffectsByType(SPELL_AURA_PERIODIC_DAMAGE);
+    Unit::AuraEffectList const& aurasPeriodicDamagePercent = bot->GetAuraEffectsByType(SPELL_AURA_PERIODIC_DAMAGE_PERCENT);
+    Unit::AuraEffectList const& aurasPeriodicTriggerSpell = bot->GetAuraEffectsByType(SPELL_AURA_PERIODIC_TRIGGER_SPELL);
+    Unit::AuraEffectList const& aurasPeriodicTriggerWithValueSpell = bot->GetAuraEffectsByType(SPELL_AURA_PERIODIC_TRIGGER_SPELL_WITH_VALUE);
+    Unit::AuraEffectList const& aurasDummy = bot->GetAuraEffectsByType(SPELL_AURA_DUMMY);
+    for (const Unit::AuraEffectList& list : {aurasPeriodicDamage, aurasPeriodicDamagePercent, aurasPeriodicTriggerSpell, aurasPeriodicTriggerWithValueSpell, aurasDummy}) {
+        for (auto i = list.begin(); i != list.end(); ++i)
+        {
+            AuraEffect* aurEff = *i;
+            Aura *aura = aurEff->GetBase();
+            AuraObjectType type = aura->GetType();
+            bool isPositive = aura->GetSpellInfo()->IsPositive();
+            if (type == DYNOBJ_AURA_TYPE && !isPositive) {
+                DynamicObject* dynOwner = aura->GetDynobjOwner();
+                if (!dynOwner) {
+                    continue;
+                }
+                return aura;
+            }
+        }
+    }
+	return nullptr;
+}

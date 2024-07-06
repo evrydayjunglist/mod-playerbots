@@ -23,6 +23,16 @@ enum class BotCheatMask : uint32
     maxMask = 32
 };
 
+enum class HealingManaEfficiency : uint8
+{
+    VERY_LOW    = 1,
+    LOW         = 2,
+    MEDIUM      = 4,
+    HIGH        = 8,
+    VERY_HIGH   = 16,
+    SUPERIOR    = 32
+};
+
 #define MAX_SPECNO 20
 
 class PlayerbotAIConfig
@@ -43,15 +53,20 @@ class PlayerbotAIConfig
         bool IsInPvpProhibitedArea(uint32 id);
 
         bool enabled;
-        bool allowGuildBots;
-        uint32 globalCoolDown, reactDelay, maxWaitForMove, expireActionTime, dispelAuraDuration, passiveDelay, repeatDelay,
+        bool allowGuildBots, allowPlayerBots;
+        uint32 globalCoolDown, reactDelay, maxWaitForMove, maxMovementSearchTime, expireActionTime, 
+            dispelAuraDuration, passiveDelay, repeatDelay,
             errorDelay, rpgDelay, sitDelay, returnDelay, lootDelay;
         float sightDistance, spellDistance, reactDistance, grindDistance, lootDistance, shootDistance,
             fleeDistance, tooCloseDistance, meleeDistance, followDistance, whisperDistance, contactDistance,
             aoeRadius, rpgDistance, targetPosRecalcDistance, farDistance, healDistance, aggroDistance;
         uint32 criticalHealth, lowHealth, mediumHealth, almostFullHealth;
         uint32 lowMana, mediumMana;
-
+        bool autoSaveMana;
+        uint32 saveManaThreshold;
+        bool autoAvoidAoe;
+        bool tellWhenAvoidAoe;
+        
         uint32 openGoSpell;
         bool randomBotAutologin;
         bool botAutologin;
@@ -73,7 +88,7 @@ class PlayerbotAIConfig
         uint32 minRandomBotChangeStrategyTime, maxRandomBotChangeStrategyTime;
         uint32 minRandomBotReviveTime, maxRandomBotReviveTime;
         uint32 minRandomBotTeleportInterval, maxRandomBotTeleportInterval;
-        uint32 randomBotInWorldWithRotaionDisabled;
+        uint32 randomBotInWorldWithRotationDisabled;
         uint32 minRandomBotPvpTime, maxRandomBotPvpTime;
         uint32 randomBotsPerInterval;
         uint32 minRandomBotsPriceChangeInterval, maxRandomBotsPriceChangeInterval;
@@ -91,11 +106,11 @@ class PlayerbotAIConfig
         std::string randomBotCombatStrategies, randomBotNonCombatStrategies;
         uint32 randomBotMinLevel, randomBotMaxLevel;
         float randomChangeMultiplier;
-        
-        
+
+
         // std::string premadeLevelSpec[MAX_CLASSES][10][91]; //lvl 10 - 100
         // ClassSpecs classSpecs[MAX_CLASSES];
-        
+
         std::string premadeSpecName[MAX_CLASSES][MAX_SPECNO];
         std::string premadeSpecGlyph[MAX_CLASSES][MAX_SPECNO];
         std::vector<uint32> parsedSpecGlyph[MAX_CLASSES][MAX_SPECNO];
@@ -159,9 +174,15 @@ class PlayerbotAIConfig
         bool summonWhenGroup;
         bool randomBotShowHelmet;
         bool randomBotShowCloak;
+        bool randomBotFixedLevel;
         bool disableRandomLevels;
         uint32 playerbotsXPrate;
+        bool disableDeathKnightLogin;
         uint32 botActiveAlone;
+
+        uint32 enablePrototypePerformanceDiff;
+        uint32 diffWithPlayer;
+        uint32 diffEmpty;
 
         bool freeMethodLoot;
         int32 lootRollLevel;
@@ -180,6 +201,7 @@ class PlayerbotAIConfig
         bool autoLearnQuestSpells;
         bool autoTeleportForLevel;
         bool randomBotSayWithoutMaster;
+        bool sayWhenCollectingItems;
         bool randomBotGroupNearby;
         uint32 tweakValue; //Debugging config
 
@@ -197,6 +219,7 @@ class PlayerbotAIConfig
         float autoInitEquipLevelLimitRatio;
         int32 addClassCommand;
         int32 maintenanceCommand;
+        int32 autoGearCommand, autoGearQualityLimit, autoGearScoreLimit;
 
         std::string const GetTimestampStr();
         bool hasLog(std::string const fileName) { return std::find(allowedLogFiles.begin(), allowedLogFiles.end(), fileName) != allowedLogFiles.end(); };

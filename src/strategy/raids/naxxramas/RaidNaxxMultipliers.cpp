@@ -19,6 +19,18 @@
 #include "WarriorActions.h"
 #include "DruidBearActions.h"
 
+float GrobbulusMultiplier::GetValue(Action* action)
+{
+	Unit* boss = AI_VALUE2(Unit*, "find target", "grobbulus");
+    if (!boss) {
+        return 1.0f;
+    }
+	if (dynamic_cast<AvoidAoeAction*>(action)) {
+		return 0.0f;
+	}
+	return 1.0f;
+}
+
 float HeiganDanceMultiplier::GetValue(Action* action)
 {
 	Unit* boss = AI_VALUE2(Unit*, "find target", "heigan the unclean");
@@ -26,7 +38,7 @@ float HeiganDanceMultiplier::GetValue(Action* action)
         return 1.0f;
     }
 	
-    boss_heigan::boss_heiganAI* boss_ai = dynamic_cast<boss_heigan::boss_heiganAI*>(boss->GetAI());
+    auto* boss_ai = dynamic_cast<Heigan::boss_heigan::boss_heiganAI*>(boss->GetAI());
     EventMap* eventMap = &boss_ai->events;
     uint32 curr_phase = boss_ai->currentPhase;
 	uint32 curr_dance = eventMap->GetNextEventTime(4);
@@ -266,7 +278,7 @@ float GluthGenericMultiplier::GetValue(Action* action)
 	}
 	if (dynamic_cast<PetAttackAction*>(action)) {
 		Unit* target = AI_VALUE(Unit*, "current target");
-		if (target && target->GetEntry() == NPC_ZOMBIE_CHOW) {
+		if (target && target->GetEntry() == Gluth::NPC_ZOMBIE_CHOW) {
 			return 0.0f;
 		}
 	}

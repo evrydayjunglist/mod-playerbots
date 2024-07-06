@@ -6,6 +6,7 @@
 #include "BattlegroundMgr.h"
 #include "Item.h"
 #include "PlayerbotAI.h"
+#include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
 #include "Engine.h"
 #include "Group.h"
@@ -265,16 +266,24 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
     {
         engine->addStrategies("racials", "chat", "default", "cast time", "duel", "boost", nullptr);
     }
-
+    if (sPlayerbotAIConfig->autoSaveMana) 
+    {
+        engine->addStrategy("auto save mana");
+    }
+    if (sPlayerbotAIConfig->autoAvoidAoe && facade->HasRealPlayerMaster())
+    {
+        engine->addStrategy("avoid aoe");
+    }
     switch (player->getClass())
     {
         case CLASS_PRIEST:
-            if (tab == 2)
-            {
+            if (tab == 2) {
                 engine->addStrategies("dps", "shadow debuff", "shadow aoe", "threat", nullptr);
+            } else if (tab == PRIEST_TAB_DISIPLINE) {
+                engine->addStrategies("heal", nullptr);
+            } else {
+                engine->addStrategies("holy heal", nullptr);
             }
-            else
-                engine->addStrategies("heal", "threat", nullptr);
 
             engine->addStrategies("dps assist", "cure", nullptr);
             break;
@@ -366,7 +375,7 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
             switch (player->getClass()) {
                 case CLASS_PRIEST: {
                     if (tab != PRIEST_TAB_SHADOW) {
-                        engine->addStrategies("holy", "shadow debuff", "shadow aoe", nullptr);
+                        engine->addStrategies("holy dps", "shadow debuff", "shadow aoe", nullptr);
                     }
                     break;
                 }
@@ -426,7 +435,7 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
             engine->addStrategy("arena");
         }
 
-        engine->addStrategies("boost", "racials", "chat", "default", "aoe", "potions", "conserve mana", "cast time", "dps assist", nullptr);
+        engine->addStrategies("boost", "racials", "chat", "default", "aoe", "potions", "cast time", "dps assist", nullptr);
         engine->removeStrategy("custom::say");
         engine->removeStrategy("flee");
         engine->removeStrategy("threat");
@@ -532,7 +541,9 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
         nonCombatEngine->addStrategies("nc", "food", "chat", "follow",
             "default", "quest", "loot", "gather", "duel", "buff", "mount", nullptr);
     }
-
+    if (sPlayerbotAIConfig->autoSaveMana) {
+        nonCombatEngine->addStrategy("auto save mana");
+    }
     if ((facade->IsRealPlayer() || sRandomPlayerbotMgr->IsRandomBot(player)) && !player->InBattleground())
     {
         Player* master = facade->GetMaster();
@@ -626,7 +637,7 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
         if (bgType == BATTLEGROUND_RB)
             bgType = player->GetBattleground()->GetBgTypeID(true);
 
-        if (bgType <= BATTLEGROUND_EY || bgType == BATTLEGROUND_IC) // do not add for not supported bg
+        if ((bgType <= BATTLEGROUND_EY || bgType == BATTLEGROUND_IC) && !player->InArena()) // do not add for not supported bg or arena
             nonCombatEngine->addStrategy("battleground");
 
         if (bgType == BATTLEGROUND_WS)
@@ -662,6 +673,7 @@ Engine* AiFactory::createNonCombatEngine(Player* player, PlayerbotAI* const faca
 
 void AiFactory::AddDefaultDeadStrategies(Player* player, PlayerbotAI* const facade, Engine* deadEngine)
 {
+    (void)facade;   // unused and remove warning
     deadEngine->addStrategies("dead", "stay", "chat", "default", "follow", nullptr);
 
     if (sRandomPlayerbotMgr->IsRandomBot(player) && !player->GetGroup())

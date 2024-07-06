@@ -6,30 +6,6 @@
 #include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
 
-class FindLeastHpTargetStrategy : public FindTargetStrategy
-{
-    public:
-        FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI), minHealth(0) { }
-
-        void CheckAttacker(Unit* attacker, ThreatMgr* threatMgr) override
-        {
-            if (Group* group = botAI->GetBot()->GetGroup())
-            {
-                ObjectGuid guid = group->GetTargetIcon(4);
-                if (guid && attacker->GetGUID() == guid)
-                    return;
-            }
-            if (!attacker->IsAlive()) {
-                return;
-            }
-            if (!result || result->GetHealth() > attacker->GetHealth())
-                result = attacker;
-        }
-
-    protected:
-        float minHealth;
-};
-
 class FindMaxThreatGapTargetStrategy : public FindTargetStrategy
 {
     public:
@@ -37,13 +13,15 @@ class FindMaxThreatGapTargetStrategy : public FindTargetStrategy
 
         void CheckAttacker(Unit* attacker, ThreatMgr* threatMgr) override
         {
-            if (Group* group = botAI->GetBot()->GetGroup())
-            {
-                ObjectGuid guid = group->GetTargetIcon(4);
-                if (guid && attacker->GetGUID() == guid)
-                    return;
-            }
             if (!attacker->IsAlive()) {
+                return;
+            }
+            if (foundHighPriority) {
+                return;
+            }
+            if (IsHighPriority(attacker)) {
+                result = attacker;
+                foundHighPriority = true;
                 return;
             }
             Unit* victim = attacker->GetVictim();
@@ -76,6 +54,14 @@ class CasterFindTargetSmartStrategy : public FindTargetStrategy
             if (!attacker->IsAlive()) {
                 return;
             }
+            if (foundHighPriority) {
+                return;
+            }
+            if (IsHighPriority(attacker)) {
+                result = attacker;
+                foundHighPriority = true;
+                return;
+            }
             float expectedLifeTime = attacker->GetHealth() / dps_;
             // Unit* victim = attacker->GetVictim();
             if (!result || IsBetter(attacker, result)) {
@@ -91,7 +77,7 @@ class CasterFindTargetSmartStrategy : public FindTargetStrategy
                 return true;
             }
             int32_t level = GetIntervalLevel(new_unit);
-            if (level % 10 == 2 || level % 10 == 0) {
+            if (level % 10 == 2 || level % 10 == 1) {
                 return new_time < old_time;
             }
             // dont switch targets when all of them with low health
@@ -110,10 +96,10 @@ class CasterFindTargetSmartStrategy : public FindTargetStrategy
             float attackRange = botAI->IsRanged(botAI->GetBot()) ? sPlayerbotAIConfig->spellDistance : sPlayerbotAIConfig->meleeDistance;
             attackRange += 5.0f;
             int level = dis < attackRange ? 10 : 0;
-            if (time >= 5 && time <= 20) {
+            if (time >= 3 && time <= 20) {
                 return level + 2;
             }
-            if (time < 5) {
+            if (time > 20) {
                 return level + 1;
             }
             return level;
@@ -139,6 +125,14 @@ class NonCasterFindTargetSmartStrategy : public FindTargetStrategy
                     return;
             }
             if (!attacker->IsAlive()) {
+                return;
+            }
+            if (foundHighPriority) {
+                return;
+            }
+            if (IsHighPriority(attacker)) {
+                result = attacker;
+                foundHighPriority = true;
                 return;
             }
             float expectedLifeTime = attacker->GetHealth() / dps_;
@@ -192,6 +186,14 @@ class ComboFindTargetSmartStrategy : public FindTargetStrategy
                     return;
             }
             if (!attacker->IsAlive()) {
+                return;
+            }
+            if (foundHighPriority) {
+                return;
+            }
+            if (IsHighPriority(attacker)) {
+                result = attacker;
+                foundHighPriority = true;
                 return;
             }
             float expectedLifeTime = attacker->GetHealth() / dps_;

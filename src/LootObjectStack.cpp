@@ -182,11 +182,11 @@ WorldObject* LootObject::GetWorldObject(Player* bot)
         return nullptr;
     }
     Creature* creature = botAI->GetCreature(guid);
-    if (creature && creature->getDeathState() == DeathState::Corpse)
+    if (creature && creature->getDeathState() == DeathState::Corpse && creature->IsInWorld())
         return creature;
 
     GameObject* go = botAI->GetGameObject(guid);
-    if (go && go->isSpawned())
+    if (go && go->isSpawned() && go->IsInWorld())
         return go;
 
     return nullptr;
@@ -249,15 +249,16 @@ bool LootObject::IsLootPossible(Player* bot)
 
 bool LootObjectStack::Add(ObjectGuid guid)
 {
+    if (availableLoot.size() >= MAX_LOOT_OBJECT_COUNT) {
+        availableLoot.shrink(time(nullptr) - 30);
+    }
+
+    if (availableLoot.size() >= MAX_LOOT_OBJECT_COUNT) {
+        availableLoot.clear();
+    }
+
     if (!availableLoot.insert(guid).second)
         return false;
-
-    if (availableLoot.size() < MAX_LOOT_OBJECT_COUNT)
-        return true;
-
-    std::vector<LootObject> ordered = OrderByDistance();
-    for (size_t i = MAX_LOOT_OBJECT_COUNT; i < ordered.size(); i++)
-        Remove(ordered[i].guid);
 
     return true;
 }

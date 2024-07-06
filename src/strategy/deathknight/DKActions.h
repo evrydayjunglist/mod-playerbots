@@ -224,16 +224,18 @@ class CastDeathCoilAction : public CastSpellAction
 		CastDeathCoilAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "death coil") { }
 };
 
-class CastBloodBoilAction : public CastBuffSpellAction
+class CastBloodBoilAction : public CastSpellAction
 {
 	public:
-		CastBloodBoilAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "blood boil") { }
+		CastBloodBoilAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "blood boil") { }
 };
 
 class CastDeathAndDecayAction : public CastSpellAction
 {
 	public:
 		CastDeathAndDecayAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "death and decay") { }
+
+		ActionThreatType getThreatType() override { return ActionThreatType::Aoe; }
 };
 
 class CastHornOfWinterAction : public CastSpellAction

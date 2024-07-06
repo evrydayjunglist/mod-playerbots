@@ -58,7 +58,8 @@ class StrategyContext : public NamedObjectContext<Strategy>
             creators["gather"] = &StrategyContext::gather;
             creators["emote"] = &StrategyContext::emote;
             creators["passive"] = &StrategyContext::passive;
-            creators["conserve mana"] = &StrategyContext::conserve_mana;
+            // creators["conserve mana"] = &StrategyContext::conserve_mana;
+            creators["auto save mana"] = &StrategyContext::auto_save_mana;
             creators["food"] = &StrategyContext::food;
             creators["chat"] = &StrategyContext::chat;
             creators["default"] = &StrategyContext::world_packet;
@@ -71,6 +72,7 @@ class StrategyContext : public NamedObjectContext<Strategy>
             creators["potions"] = &StrategyContext::potions;
             creators["cast time"] = &StrategyContext::cast_time;
             creators["threat"] = &StrategyContext::threat;
+            creators["focus"] = &StrategyContext::focus;
             creators["tell target"] = &StrategyContext::tell_target;
             creators["pvp"] = &StrategyContext::pvp;
             creators["return"] = &StrategyContext::_return;
@@ -85,7 +87,7 @@ class StrategyContext : public NamedObjectContext<Strategy>
             creators["map full"] = &StrategyContext::map_full;
             creators["sit"] = &StrategyContext::sit;
             creators["mark rti"] = &StrategyContext::mark_rti;
-            creators["ads"] = &StrategyContext::possible_adds;
+            creators["adds"] = &StrategyContext::possible_adds;
             creators["close"] = &StrategyContext::close;
             creators["ranged"] = &StrategyContext::ranged;
             creators["behind"] = &StrategyContext::behind;
@@ -119,6 +121,7 @@ class StrategyContext : public NamedObjectContext<Strategy>
         static Strategy* mark_rti(PlayerbotAI* botAI) { return new MarkRtiStrategy(botAI); }
         static Strategy* tell_target(PlayerbotAI* botAI) { return new TellTargetStrategy(botAI); }
         static Strategy* threat(PlayerbotAI* botAI) { return new ThreatStrategy(botAI); }
+        static Strategy* focus(PlayerbotAI* botAI) { return new FocusStrategy(botAI); }
         static Strategy* cast_time(PlayerbotAI* botAI) { return new CastTimeStrategy(botAI); }
         static Strategy* potions(PlayerbotAI* botAI) { return new UsePotionsStrategy(botAI); }
         static Strategy* kite(PlayerbotAI* botAI) { return new KiteStrategy(botAI); }
@@ -131,7 +134,8 @@ class StrategyContext : public NamedObjectContext<Strategy>
         static Strategy* gather(PlayerbotAI* botAI) { return new GatherStrategy(botAI); }
         static Strategy* emote(PlayerbotAI* botAI) { return new EmoteStrategy(botAI); }
         static Strategy* passive(PlayerbotAI* botAI) { return new PassiveStrategy(botAI); }
-        static Strategy* conserve_mana(PlayerbotAI* botAI) { return new ConserveManaStrategy(botAI); }
+        // static Strategy* conserve_mana(PlayerbotAI* botAI) { return new ConserveManaStrategy(botAI); }
+        static Strategy* auto_save_mana(PlayerbotAI* botAI) { return new HealerAutoSaveManaStrategy(botAI); }
         static Strategy* food(PlayerbotAI* botAI) { return new UseFoodStrategy(botAI); }
         static Strategy* chat(PlayerbotAI* botAI) { return new ChatCommandHandlerStrategy(botAI); }
         static Strategy* world_packet(PlayerbotAI* botAI) { return new WorldPacketHandlerStrategy(botAI); }

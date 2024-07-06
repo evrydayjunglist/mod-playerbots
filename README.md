@@ -1,8 +1,12 @@
+ [English](README.md) | [Español](README_ES.md) | [中文](README_CN.md)
+
 # Playerbots Module
 
 Welcome to a fork of Playerbots Module for AzerothCore, a work in progress project based on the IKE3 Playerbots. These Playerbots utilize actual player data, allowing you to interact with your own alts, form parties, level up characters, and much more.
 
 If you encounter any errors or experience crashes, we kindly request that you report them as GitHub issues. Your valuable feedback will help us improve and enhance this project collaboratively.
+
+You can also get more information in our [discord](https://discord.gg/NQm5QShwf9).
 
 ## Installation
 
@@ -22,7 +26,7 @@ git clone https://github.com/evrydayjunglist/mod-playerbots.git --branch=master
 
 For a quick start and an extensive set of commands, you can refer to the manual for the original version of playerbots by ike3. Most of the basic commands are available for this module. You can find the documentation here: [IKE3 Playerbots Documentation](https://ike3.github.io/mangosbot-docs/). Please note that in our module, you need to replace all occurrences of `.bot` with `.playerbot bot` in the documentation.
 
-Please be aware that documentation for newly added commands is currently lacking as the project is still under development. 
+Please be aware that documentation for newly added commands is currently lacking as the project is still under development.
 
 ## Progress
 
@@ -46,7 +50,9 @@ It's essential to note that there is still a significant amount of work to be do
 
 ## Addon
 
-For enhanced control over the bots and to simplify command usage, you can also make use of our addon: [Unbot Addon](https://github.com/liyunfan1223/unbot-addon). Currently, this addon offers better support only for Simplified Chinese client.
+For enhanced control over the bots and to simplify command usage, you can also make use of our addon:
+- Chinese version: [Unbot Addon (zh)](https://github.com/liyunfan1223/unbot-addon). 
+- English version (maintained by @Revision): [Unbot Addon (en)](https://github.com/noisiver/unbot-addon/tree/english).
 
 ## Frequently Asked Questions
 
@@ -64,8 +70,8 @@ For enhanced control over the bots and to simplify command usage, you can also m
 
 ## Acknowledgements
 
-The code for this module is ported from [ZhengPeiRu21/mod-playerbots](https://github.com/ZhengPeiRu21/mod-playerbots) and [celguar/mangosbot-bots](https://github.com/celguar/mangosbot-bots). We extend our gratitude to @ZhengPeiRu21 and @celguar for the continued efforts in maintaining the module. 
+The code for this module is ported from [ZhengPeiRu21/mod-playerbots](https://github.com/ZhengPeiRu21/mod-playerbots) and [celguar/mangosbot-bots](https://github.com/celguar/mangosbot-bots). We extend our gratitude to @ZhengPeiRu21 and @celguar for the continued efforts in maintaining the module.
 
 We also want to express our sincere appreciation to all individuals who have contributed to playerbot development. Your dedication and efforts have been instrumental in shaping this project, and we are thankful for your contributions.
- 
+
 

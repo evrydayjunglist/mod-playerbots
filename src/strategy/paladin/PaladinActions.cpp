@@ -26,17 +26,17 @@ inline std::string const GetActualBlessingOfMight(Unit* target)
             break;
         case CLASS_SHAMAN:
             if (tab == SHAMAN_TAB_ELEMENTAL || tab == SHAMAN_TAB_RESTORATION) {
-                return "bless of wisdom";
+                return "blessing of wisdom";
             }
             break;
         case CLASS_DRUID:
             if (tab == DRUID_TAB_RESTORATION || tab == DRUID_TAB_BALANCE) {
-                return "bless of wisdom";
+                return "blessing of wisdom";
             }
             break;
         case CLASS_PALADIN:
             if (tab == PALADIN_TAB_HOLY) {
-                return "bless of wisdom";
+                return "blessing of wisdom";
             }
             break;
     }
@@ -154,4 +154,20 @@ bool CastMeleeConsecrationAction::isUseful()
     Unit* target = GetTarget();
     // float dis = distance + CONTACT_DISTANCE;
     return target && bot->IsWithinCombatRange(target, sPlayerbotAIConfig->meleeDistance); // sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), distance);
+}
+
+bool CastDivineSacrificeAction::isUseful()
+{
+    return GetTarget() && (GetTarget() != nullptr) && CastSpellAction::isUseful() && !botAI->HasAura("divine guardian", GetTarget(), false, false, -1, true);
+}
+
+bool CastCancelDivineSacrificeAction::Execute(Event event)
+{
+    botAI->RemoveAura("divine sacrifice");
+    return true;
+}
+
+bool CastCancelDivineSacrificeAction::isUseful()
+{
+    return botAI->HasAura("divine sacrifice", GetTarget(), false, true, -1, true);
 }

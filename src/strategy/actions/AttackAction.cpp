@@ -36,7 +36,8 @@ bool AttackMyTargetAction::Execute(Event event)
 
         return false;
     }
-
+    
+    botAI->GetAiObjectContext()->GetValue<GuidVector>("prioritized targets")->Set({guid});
     bool result = Attack(botAI->GetUnit(guid));
     if (result)
         context->GetValue<ObjectGuid>("pull target")->Set(guid);
@@ -62,6 +63,10 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
         return false;
     }
 
+    if (!target->IsInWorld())
+    {
+        return false;
+    }
     std::ostringstream msg;
     msg << target->GetName();
 
@@ -105,7 +110,8 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
     context->GetValue<Unit*>("current target")->Set(target);
     context->GetValue<LootObjectStack*>("available loot")->Get()->Add(guid);
     
-    bool attacked = bot->Attack(target, true);
+    bool melee = bot->IsWithinMeleeRange(target) || botAI->IsMelee(bot);
+    bot->Attack(target, melee);
 
     if (IsMovingAllowed() && !bot->HasInArc(CAST_ANGLE_IN_FRONT, target)) {
         sServerFacade->SetFacingTo(bot, target);

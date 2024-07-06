@@ -364,9 +364,9 @@ Player* PlayerbotHolder::GetPlayerBot(ObjectGuid::LowType lowGuid) const
 void PlayerbotHolder::OnBotLogin(Player* const bot)
 {
     sPlayerbotsMgr->AddPlayerbotData(bot, true);
+    playerBots[bot->GetGUID()] = bot;
     OnBotLoginInternal(bot);
 
-    playerBots[bot->GetGUID()] = bot;
 
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
     if (!botAI) {
@@ -448,6 +448,12 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
     uint32 accountId = bot->GetSession()->GetAccountId();
     bool isRandomAccount = sPlayerbotAIConfig->IsInRandomAccountList(accountId);
 
+    if (isRandomAccount && sPlayerbotAIConfig->randomBotFixedLevel) {
+        bot->SetPlayerFlag(PLAYER_FLAGS_NO_XP_GAIN);
+    } else if (isRandomAccount && !sPlayerbotAIConfig->randomBotFixedLevel) {
+        bot->RemovePlayerFlag(PLAYER_FLAGS_NO_XP_GAIN);
+    }
+
     bot->SaveToDB(false, false);
     if (master && isRandomAccount && master->GetLevel() < bot->GetLevel()) {
         // PlayerbotFactory factory(bot, master->getLevel());
@@ -526,6 +532,9 @@ std::string const PlayerbotHolder::ProcessBotCommand(std::string const cmd, Obje
     {
         if (ObjectAccessor::FindPlayer(guid))
             return "player already logged in";
+
+        if (!sPlayerbotAIConfig->allowPlayerBots && !isRandomAccount && !isMasterAccount)
+            return "You cannot login another player's character as bot.";
 
         AddPlayerBot(guid, masterAccountId);
         return "ok";
@@ -606,6 +615,14 @@ std::string const PlayerbotHolder::ProcessBotCommand(std::string const cmd, Obje
                 return "ok, gear score limit: " + std::to_string(gs / (ITEM_QUALITY_EPIC + 1)) + "(for epic)";
             }
         }
+
+        if (cmd == "refresh=raid")
+        {   // TODO: This function is not perfect yet. If you are already in a raid, 
+            // after the command is executed, the AI ​​needs to go back online or exit the raid and re-enter.
+            PlayerbotFactory factory(bot, bot->getLevel());
+            factory.UnbindInstance();
+            return "ok";
+        }
     }
 
     if (cmd == "levelup" || cmd == "level")
@@ -624,6 +641,11 @@ std::string const PlayerbotHolder::ProcessBotCommand(std::string const cmd, Obje
     {
         sRandomPlayerbotMgr->Randomize(bot);
         return "ok";
+    }
+    else if (cmd == "quests"){
+        PlayerbotFactory factory(bot, bot->getLevel());
+        factory.InitInstanceQuests();
+        return "Initialization quests";
     }
     // }
 
@@ -897,7 +919,7 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
 
     std::string const cmdStr = cmd;
 
-    std::set<std::string> bots;
+    std::unordered_set<std::string> bots;
     if (charnameStr == "*" && master)
     {
         Group* group = master->GetGroup();
@@ -955,7 +977,7 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
         }
     }
 
-    for (std::set<std::string>::iterator i = bots.begin(); i != bots.end(); ++i)
+    for (auto i = bots.begin(); i != bots.end(); ++i)
     {
         std::string const bot = *i;
 

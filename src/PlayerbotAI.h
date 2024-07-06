@@ -10,6 +10,7 @@
 #include "ChatFilter.h"
 #include "Common.h"
 #include "Event.h"
+#include "Item.h"
 #include "PlayerbotAIBase.h"
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotSecurity.h"
@@ -328,15 +329,15 @@ class PlayerbotAI : public PlayerbotAIBase
         void ResetStrategies(bool load = false);
         void ReInitCurrentEngine();
         void Reset(bool full = false);
-        bool IsTank(Player* player);
-        bool IsHeal(Player* player);
-        bool IsDps(Player* player);
-        bool IsRanged(Player* player);
-        bool IsMelee(Player* player);
-        bool IsCaster(Player* player);
-        bool IsCombo(Player* player);
-        bool IsRangedDps(Player* player);
-        bool IsMainTank(Player* player);
+        static bool IsTank(Player* player);
+        static bool IsHeal(Player* player);
+        static bool IsDps(Player* player);
+        static bool IsRanged(Player* player);
+        static bool IsMelee(Player* player);
+        static bool IsCaster(Player* player);
+        static bool IsCombo(Player* player);
+        static bool IsRangedDps(Player* player);
+        static bool IsMainTank(Player* player);
         bool IsAssistTank(Player* player);
         bool IsAssistTankOfIndex(Player* player, int index);
         bool IsHealAssistantOfIndex(Player* player, int index);
@@ -451,6 +452,8 @@ class PlayerbotAI : public PlayerbotAIBase
         bool IsInRealGuild();
         static std::vector<std::string> dispel_whitelist;
         bool EqualLowercaseName(std::string s1, std::string s2);
+        InventoryResult CanEquipItem(uint8 slot, uint16& dest, Item* pItem, bool swap, bool not_loading = true) const;
+        uint8 FindEquipSlot(ItemTemplate const* proto, uint32 slot, bool swap) const;
     private:
         static void _fillGearScoreData(Player* player, Item* item, std::vector<uint32>* gearScore, uint32& twoHandScore, bool mixed = false);
         bool IsTellAllowed(PlayerbotSecurityLevel securityLevel = PLAYERBOT_SECURITY_ALLOW_ALL);
