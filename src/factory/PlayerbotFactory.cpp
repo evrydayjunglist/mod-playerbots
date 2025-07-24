@@ -2999,6 +2999,14 @@ void PlayerbotFactory::InitMounts()
             slow = {33660, 35020, 35022, 35018};
             fast = {35025, 35025, 35027};
             break;
+		case RACE_WORGEN:
+            slow = {98633};
+            fast = {98634};
+            break;
+		case RACE_GOBLIN:
+            slow = {98632};
+            fast = {98631};
+            break;
     }
 
     switch (bot->GetTeamId())

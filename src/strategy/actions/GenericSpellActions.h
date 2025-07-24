@@ -277,6 +277,30 @@ public:
     CastBerserkingAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "berserking") {}
 };
 
+class CastRocketBarrageAction : public CastSpellAction
+{
+public:
+    CastRocketBarrageAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "rocket barrage") {}
+};
+
+class CastRocketJumpAction : public CastSpellAction
+{
+public:
+    CastRocketJumpAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "rocket jump") {}
+};
+
+class CastDarkflightAction : public CastBuffSpellAction
+{
+public:
+    CastDarkflightAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "darkflight") {}
+};
+
+class CastFeralLungeAction : public CastSpellAction
+{
+public:
+    CastFeralLungeAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "feral lunge") {}
+};
+
 class UseTrinketAction : public Action
 {
 public:

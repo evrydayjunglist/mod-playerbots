@@ -43,6 +43,10 @@ constexpr RandomPlayerbotFactory::NameRaceAndGender RandomPlayerbotFactory::Comb
             return static_cast<NameRaceAndGender>(static_cast<uint8>(NameRaceAndGender::DraeneiMale) + gender);
         case RACE_BLOODELF:
             return static_cast<NameRaceAndGender>(static_cast<uint8>(NameRaceAndGender::BloodelfMale) + gender);
+		case RACE_WORGEN:
+            return static_cast<NameRaceAndGender>(static_cast<uint8>(NameRaceAndGender::WorgenMale) + gender);
+        case RACE_GOBLIN:
+            return static_cast<NameRaceAndGender>(static_cast<uint8>(NameRaceAndGender::GoblinMale) + gender);
         default:
             LOG_ERROR("playerbots", "The race with ID %d does not have a naming category", race);
             return static_cast<NameRaceAndGender>(static_cast<uint8>(NameRaceAndGender::GenericMale) + gender);
@@ -61,6 +65,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_WARRIOR].push_back(RACE_UNDEAD_PLAYER);
     availableRaces[CLASS_WARRIOR].push_back(RACE_TAUREN);
     availableRaces[CLASS_WARRIOR].push_back(RACE_TROLL);
+	availableRaces[CLASS_WARRIOR].push_back(RACE_WORGEN);
+    availableRaces[CLASS_WARRIOR].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_WARRIOR].push_back(RACE_DRAENEI);
@@ -81,6 +87,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_ROGUE].push_back(RACE_ORC);
     availableRaces[CLASS_ROGUE].push_back(RACE_UNDEAD_PLAYER);
     availableRaces[CLASS_ROGUE].push_back(RACE_TROLL);
+    availableRaces[CLASS_ROGUE].push_back(RACE_WORGEN);
+    availableRaces[CLASS_ROGUE].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_ROGUE].push_back(RACE_BLOODELF);
@@ -91,6 +99,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_PRIEST].push_back(RACE_NIGHTELF);
     availableRaces[CLASS_PRIEST].push_back(RACE_TROLL);
     availableRaces[CLASS_PRIEST].push_back(RACE_UNDEAD_PLAYER);
+	availableRaces[CLASS_PRIEST].push_back(RACE_WORGEN);
+    availableRaces[CLASS_PRIEST].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_PRIEST].push_back(RACE_DRAENEI);
@@ -101,6 +111,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_MAGE].push_back(RACE_GNOME);
     availableRaces[CLASS_MAGE].push_back(RACE_UNDEAD_PLAYER);
     availableRaces[CLASS_MAGE].push_back(RACE_TROLL);
+	availableRaces[CLASS_MAGE].push_back(RACE_WORGEN);
+    availableRaces[CLASS_MAGE].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_MAGE].push_back(RACE_DRAENEI);
@@ -111,6 +123,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_WARLOCK].push_back(RACE_GNOME);
     availableRaces[CLASS_WARLOCK].push_back(RACE_UNDEAD_PLAYER);
     availableRaces[CLASS_WARLOCK].push_back(RACE_ORC);
+	availableRaces[CLASS_WARLOCK].push_back(RACE_WORGEN);
+    availableRaces[CLASS_WARLOCK].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_WARLOCK].push_back(RACE_BLOODELF);
@@ -119,6 +133,7 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_SHAMAN].push_back(RACE_ORC);
     availableRaces[CLASS_SHAMAN].push_back(RACE_TAUREN);
     availableRaces[CLASS_SHAMAN].push_back(RACE_TROLL);
+	availableRaces[CLASS_SHAMAN].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_SHAMAN].push_back(RACE_DRAENEI);
@@ -129,6 +144,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
     availableRaces[CLASS_HUNTER].push_back(RACE_ORC);
     availableRaces[CLASS_HUNTER].push_back(RACE_TAUREN);
     availableRaces[CLASS_HUNTER].push_back(RACE_TROLL);
+    availableRaces[CLASS_HUNTER].push_back(RACE_WORGEN);
+    availableRaces[CLASS_HUNTER].push_back(RACE_GOBLIN);
     if (expansion >= EXPANSION_THE_BURNING_CRUSADE)
     {
         availableRaces[CLASS_HUNTER].push_back(RACE_DRAENEI);
@@ -137,6 +154,7 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
 
     availableRaces[CLASS_DRUID].push_back(RACE_NIGHTELF);
     availableRaces[CLASS_DRUID].push_back(RACE_TAUREN);
+	availableRaces[CLASS_DRUID].push_back(RACE_WORGEN);
 
     if (expansion == EXPANSION_WRATH_OF_THE_LICH_KING)
     {
@@ -150,6 +168,8 @@ RandomPlayerbotFactory::RandomPlayerbotFactory(uint32 accountId) : accountId(acc
         availableRaces[CLASS_DEATH_KNIGHT].push_back(RACE_DRAENEI);
         availableRaces[CLASS_DEATH_KNIGHT].push_back(RACE_GNOME);
         availableRaces[CLASS_DEATH_KNIGHT].push_back(RACE_DWARF);
+		availableRaces[CLASS_DEATH_KNIGHT].push_back(RACE_WORGEN);
+        availableRaces[CLASS_DEATH_KNIGHT].push_back(RACE_GOBLIN);
     }
 }
 
@@ -230,6 +250,7 @@ Player* RandomPlayerbotFactory::CreateRandomBot(WorldSession* session, uint8 cls
     std::pair<uint8, uint8> hair = hairs[urand(0, hairs.size() - 1)];
 
     bool excludeCheck = (race == RACE_TAUREN) || (race == RACE_DRAENEI) ||
+						(race == RACE_WORGEN) || (race == RACE_GOBLIN) ||
                         (gender == GENDER_FEMALE && race != RACE_NIGHTELF && race != RACE_UNDEAD_PLAYER);
     uint8 facialHair = excludeCheck ? 0 : facialHairTypes[urand(0, facialHairTypes.size() - 1)];
 
