@@ -3000,12 +3000,12 @@ void PlayerbotFactory::InitMounts()
             fast = {35025, 35025, 35027};
             break;
 		case RACE_WORGEN:
-            slow = {98633};
-            fast = {98634};
+            slow = {103195};
+            fast = {103196};
             break;
 		case RACE_GOBLIN:
-            slow = {98632};
-            fast = {98631};
+            slow = {87090};
+            fast = {87091};
             break;
     }
 
