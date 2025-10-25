@@ -100007,7 +100007,3 @@ INSERT INTO `playerbots_names` VALUES
 (99997,'Zyvea',17),
 (99998,'Zyvie',17),
 (99999,'Zywae',17);
-
-DELETE FROM `playerbots_names` WHERE LENGTH(`name`) > 12;
-ALTER TABLE `playerbots_names` MODIFY `name` varchar(12);
-ALTER TABLE `playerbots_names` ADD UNIQUE INDEX name(name, gender);

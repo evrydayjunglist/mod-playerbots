@@ -193,6 +193,10 @@ public:
         creators["clean quest log"] = &ActionContext::clean_quest_log;
         creators["roll"] = &ActionContext::roll_action;
         creators["cancel channel"] = &ActionContext::cancel_channel;
+        creators["rocket barrage"] = &ActionContext::rocket_barrage;
+        creators["rocket jump"] = &ActionContext::rocket_jump;
+        creators["darkflight"] = &ActionContext::darkflight;
+        creators["feral lunge"] = &ActionContext::feral_lunge;
 
         // BG Tactics
         creators["bg tactics"] = &ActionContext::bg_tactics;
@@ -381,6 +385,11 @@ private:
     static Action* guild_manage_nearby(PlayerbotAI* botAI) { return new GuildManageNearbyAction(botAI); }
     static Action* clean_quest_log(PlayerbotAI* botAI) { return new CleanQuestLogAction(botAI); }
     static Action* roll_action(PlayerbotAI* botAI) { return new RollAction(botAI); }
+
+    static Action* rocket_barrage(PlayerbotAI* botAI) { return new CastRocketBarrageAction(botAI); }
+    static Action* rocket_jump(PlayerbotAI* botAI) { return new CastRocketJumpAction(botAI); }
+    static Action* darkflight(PlayerbotAI* botAI) { return new CastDarkflightAction(botAI); }
+    static Action* feral_lunge(PlayerbotAI* botAI) { return new CastFeralLungeAction(botAI); }
 
     // BG Tactics
     static Action* bg_tactics(PlayerbotAI* botAI) { return new BGTactics(botAI); }
